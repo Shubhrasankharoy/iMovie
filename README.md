@@ -1,17 +1,18 @@
 ## iMovie GPT
 
-- create next.js
-```bash
-npx create-next-app@latest
-```
+1. create next.js
+    - Run this command
+        ```bash
+        npx create-next-app@latest
+        ```
     - install 
         - DEPENDENCIES :- 
             - react, react-dom, next
         - DEV DEPENDENCIES :- 
             - @tailwindcss/postcss, tailwindcss
-- Build get start page
-- Build login page
-- Setup firebase
+2. Build get start page
+3. Build login page
+4. Setup firebase
     - create a project
     - install firebase
     ```bash
@@ -39,12 +40,16 @@ npx create-next-app@latest
         ``` bash
         firebase deploy
         ```
-
-- install redux
-```bash
-npm install @reduxjs/toolkit
-npm install react-redux
-```
+5. Write authentication logic
+    - Impliment sign in and sign up user api
+6. Setup redux store
+    - install redux
+        ```bash
+        npm install @reduxjs/toolkit
+        npm install react-redux
+        ```
+    - Create a store with user slice
+    - Connect the store with our web site
 
 
 

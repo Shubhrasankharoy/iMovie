@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
+import { useDispatch, useSelector } from 'react-redux'
+import { usePathname, useRouter } from 'next/navigation'
+import { signOut } from 'firebase/auth'
+import { auth } from '@/utils/firebase'
+import { removeUser } from '@/utils/userSlice'
 
 export default function Header() {
+    const router = useRouter()
+    const user = useSelector((state) => state.user)
+    const dispatch = useDispatch()
+    const path = usePathname();
+
+
+    // Functions
+    const handleSignOut = () => {
+        signOut(auth)
+        .then(() => {
+                dispatch(removeUser())
+                router.push('/login')
+            })
+    }
+
     return (
         <div className='flex justify-between w-full h-23 py-3'>
             <svg
@@ -19,7 +39,7 @@ export default function Header() {
                 </g>
             </svg>
 
-            <div className='flex items-center justify-center space-x-3'>
+            <div className={` ${path == '/login' ? 'hidden' : 'flex'} items-center justify-center space-x-3`}>
                 <div className="border border-gray-400 text-white px-3 py-2 rounded-lg flex items-center gap-2 bg-gray-800">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -50,9 +70,20 @@ export default function Header() {
                     </select>
                 </div>
 
-                <Link href="/login" className='bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-sm cursor-pointer'>
-                    Sign in
-                </Link>
+                {!user ? (
+                    <Link href="/login" className='bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-sm cursor-pointer'>
+                        Sign in
+                    </Link>
+                ) : (
+                    <>
+                        <h1 className='text-lg font-bold'>{user.displayName}</h1>
+                        <button
+                            onClick={handleSignOut}
+                            className='bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-sm cursor-pointer'>
+                            Sign out
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     )

@@ -2,12 +2,26 @@
 import Header from '@/components/Header'
 import { BG_URL } from '@/utils/constants'
 import validForm from '@/utils/validForm'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { createUserWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth'
+import { auth } from '@/utils/firebase'
+import { useDispatch, useSelector } from 'react-redux'
+import { addUser } from '@/utils/userSlice'
+import { useRouter } from 'next/navigation'
 
-const Login = () => {
-  const [isSignInForm, setIsSignInForm] = useState(true);
+
+
+const page = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const dispatch = useDispatch();
+  const router = useRouter()
+  const user = useSelector((state) => state.user);
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
+
   const [form, setForm] = useState({
-    isValid: true,
+    isSignInForm: true,
+    invalid: false,
     errorInput: '',
     errorMessage: '',
     name: '',
@@ -15,59 +29,163 @@ const Login = () => {
     password: ''
   })
 
+  useEffect(() => {
+    if (user) {
+      router.push('/browse');
+    }
+  }, [user]);
+
 
   // Functions
   const toggleform = () => {
-    setForm({
-      isValid: true,
-      errorInput: '',
-      errorMessage: '',
-      name: '',
-      email: '',
-      password: ''
+    setForm((form) => {
+      return {
+        isSignInForm: !form.isSignInForm,
+        invalid: false,
+        errorInput: '',
+        errorMessage: '',
+        name: '',
+        email: '',
+        password: ''
+      }
     })
-    setIsSignInForm(!isSignInForm)
   }
 
   const handleSubmitForm = () => {
-    const { isValid, input, message } = validForm(form);
-    console.log(isValid, input, message);
-    if (!isValid) {
+    // Step 1: Validate form
+    const { invalid, input, message } = validForm(form);
+    if (invalid) {
       setForm({
         ...form,
-        isValid: false,
+        invalid: true,
         errorInput: input,
-        errorMessage: message
-      })
+        errorMessage: message,
+      });
       return;
     }
-    setForm({
-      ...form,
-      isValid: true,
-      errorInput: '',
-      errorMessage: ''
-    })
 
+    // Step 2: Common reset for errors
+    setForm((prevForm) => ({
+      ...prevForm,
+      invalid: false,
+      errorInput: '',
+      errorMessage: '',
+    }));
+
+    setIsSubmitting(true);
+
+    // Step 3: Sign In Flow
+    if (form.isSignInForm) {
+      console.log("Starting sign in...");
+
+      signInWithEmailAndPassword(auth, form.email, form.password)
+        .then(() => {
+          const { uid, email, displayName } = auth.currentUser;
+          dispatch(addUser({ uid, email, displayName }));
+        })
+        .catch((error) => {
+          console.error("Sign In Error:", error.code, error.message);
+        })
+        .finally(() => {
+          setIsSubmitting(false)
+        })
+
+      // Step 4: Sign Up Flow
+    } else {
+      createUserWithEmailAndPassword(auth, form.email, form.password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          return updateProfile(user, { displayName: form.name }).then(() => {
+            const { uid, email, displayName } = auth.currentUser;
+            dispatch(addUser({ uid, email, displayName }));
+          });
+        })
+        .catch((error) => {
+          console.error("Sign Up Error:", error.code, error.message);
+        })
+        .finally(() => {
+          setIsSubmitting(false)
+        })
+    }
+  };
+
+  const handleLoginWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        console.log(user);
+
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  }
+
+  const handleLoginWithFacebook = () => {
+    console.log("Login start");
+    
+    signInWithPopup(auth, facebookProvider)
+      .then((result) => {
+    console.log("Login have done");
+        // The signed-in user info.
+        const user = result.user;
+
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      })
+      .catch((error) => {
+    console.log("Login has an error");
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = FacebookAuthProvider.credentialFromError(error);
+
+        // ...
+      });
   }
 
   return (
     <div className="relative min-h-screen flex justify-center">
       <img className="absolute w-full h-full pointer-events-none object-cover" src={BG_URL} alt="background" />
-      <div className="absolute w-full h-full bg-gradient-to-b to-[#000000b7] from-[#0000009a]"></div>
+      <div className="absolute w-full h-full bg-gradient-to-b to-[#00000069] from-[#0000006c]"></div>
       <div className="container flex flex-col mx-auto z-10">
         <Header />
         <div className="w-[500] bg-black/70 mx-auto p-10 my-20 rounded-md">
-          <h1 className='text-3xl font-bold mb-7'>{isSignInForm ? 'Sign In' : 'Sign up'} </h1>
+          <h1 className='text-3xl font-bold mb-7'>{form.isSignInForm ? 'Sign In' : 'Sign up'} </h1>
 
-          {!isSignInForm &&
-            <input
-              className="py-4 px-3 bg-gray-900/70 border border-gray-900 w-full rounded-sm"
-              value={form.name}
-              onChange={(e) => { setForm({ ...form, name: e.target.value }) }}
-              name='name'
-              type="text"
-              placeholder='Your Name'
-            />
+          {!form.isSignInForm && (
+            <>
+              <input
+                className="py-4 px-3 bg-gray-900/70 border border-gray-900 w-full rounded-sm"
+                value={form.name}
+                onChange={(e) => { setForm({ ...form, name: e.target.value }) }}
+                name='name'
+                type="text"
+                placeholder='Your Name'
+              />
+              <p className="text-red-600 ms-1">{form.invalid && form.errorInput == "name" && form.errorMessage} </p>
+            </>
+          )
           }
           <input
             className="py-4 px-3 bg-gray-900/70 border border-gray-900 w-full rounded-sm mt-5"
@@ -77,7 +195,7 @@ const Login = () => {
             type="text"
             placeholder='Email'
           />
-          <p className="text-red-600 ms-1">{!form.isValid && form.errorInput == "email" && form.errorMessage} </p>
+          <p className="text-red-600 ms-1">{form.invalid && form.errorInput == "email" && form.errorMessage} </p>
           <input
             className="py-4 px-3 bg-gray-900/70 border border-gray-900 w-full rounded-sm mt-5"
             value={form.password}
@@ -86,17 +204,18 @@ const Login = () => {
             type="password"
             placeholder='Password'
           />
-          <p className="text-red-600 ms-1">{!form.isValid && form.errorInput == "password" && form.errorMessage} </p>
+          <p className="text-red-600 ms-1">{form.invalid && form.errorInput == "password" && form.errorMessage} </p>
 
-          <p className='py-3'>{isSignInForm ? 'New to iMovie?' : 'Already in iMovie?'}
-            <span className='text-blue-500 hover:text-blue-600 hover:underline cursor-pointer ms-0.5' onClick={toggleform}>{isSignInForm ? 'Sign up now' : 'Sign in now'}</span>
+          <p className='py-3'>{form.isSignInForm ? 'New to iMovie?' : 'Already in iMovie?'}
+            <span className='text-blue-500 hover:text-blue-600 hover:underline cursor-pointer ms-0.5' onClick={toggleform}>{form.isSignInForm ? 'Sign up now' : 'Sign in now'}</span>
           </p>
 
           <button
-            className='bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-sm cursor-pointer w-full'
+            className={`bg-red-600 hover:bg-red-700 text-white ${isSubmitting ? 'cursor-progress' : "cursor-pointer"} focus:ring-2 font-bold py-2 px-4 rounded-sm  w-full`}
             onClick={handleSubmitForm}
+            disabled={isSubmitting ? true : false}
           >
-            {isSignInForm ? 'Sign In' : 'Sign up'}
+            {form.isSignInForm ? 'Sign In' : 'Sign up'}
           </button>
 
           <div className="flex gap-3 w-full items-center my-3">
@@ -107,7 +226,9 @@ const Login = () => {
 
 
           <button
-            className="flex w-full items-center justify-center bg-black border border-gray-300 rounded-lg shadow-md px-6 py-2 text-md font-bold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer mb-3">
+            disabled={isSubmitting ? true : false}
+            onClick={handleLoginWithGoogle}
+            className={`flex w-full items-center justify-center bg-black border ${isSubmitting ? 'cursor-progress' : "cursor-pointer"} border-gray-300 rounded-lg shadow-md px-6 py-2 text-md font-bold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500`}>
             <svg className="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg"
               viewBox="-0.5 0 48 48" version="1.1">
 
@@ -134,7 +255,9 @@ const Login = () => {
           </button>
 
           <button
-            className="flex w-full items-center justify-center bg-black border border-gray-300 rounded-lg shadow-md px-6 py-2 text-md font-bold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer">
+            disabled={isSubmitting ? true : false}
+            onClick={handleLoginWithFacebook}
+            className={`flex w-full items-center justify-center bg-black border ${isSubmitting ? 'cursor-progress' : "cursor-pointer"} border-gray-300 rounded-lg shadow-md px-6 py-2 text-md font-bold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500`}>
             <svg className="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48" version="1.1">
               <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -157,4 +280,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default page

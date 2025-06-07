@@ -2,12 +2,20 @@
 
 
 const validForm = (form) => {
-    const { email, password } = form;
+    const { isSignInForm, name, email, password } = form;
+
+    if(!isSignInForm && (name.trim() == '' || /\d/.test(name))){
+        return {
+            invalid: true,
+            input: 'name',
+            message: "Please enter a valid name"
+        }
+    }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!emailRegex.test(email)){
         return {
-            isValid: false,
+            invalid: true,
             input: 'email',
             message: "Please enter a valid email"
         };
@@ -16,7 +24,7 @@ const validForm = (form) => {
 
     if(!(/[A-Z]/.test(password))){
         return {
-            isValid: false,
+            invalid: true,
             input: 'password',
             message: "❌ Uppercase letter"
         }
@@ -24,7 +32,7 @@ const validForm = (form) => {
 
     if(!(/[a-z]/.test(password))){
         return {
-            isValid: false,
+            invalid: true,
             input: 'password',
             message: "❌ Lowercase letter"
         }
@@ -32,7 +40,7 @@ const validForm = (form) => {
 
     if(!(/\d/.test(password))){
         return {
-            isValid: false,
+            invalid: true,
             input: 'password',
             message: "❌ Number"
         }
@@ -40,7 +48,7 @@ const validForm = (form) => {
 
     if(!(password.length >= 6)){
         return {
-            isValid: false,
+            invalid: true,
             input: 'password',
             message: "< 6 character"
         }
@@ -48,7 +56,7 @@ const validForm = (form) => {
 
 
     return {
-        isValid: true,
+        invalid: false,
         input: '',
         message: ''
     }
