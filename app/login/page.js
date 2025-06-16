@@ -7,14 +7,12 @@ import { createUserWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvide
 import { auth } from '@/utils/firebase'
 import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from '@/utils/userSlice'
-import { useRouter } from 'next/navigation'
 
 
 
 const page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const dispatch = useDispatch();
-  const router = useRouter()
   const user = useSelector((state) => state.user);
   const googleProvider = new GoogleAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
@@ -28,12 +26,6 @@ const page = () => {
     email: '',
     password: ''
   })
-
-  useEffect(() => {
-    if (user) {
-      router.push('/browse');
-    }
-  }, [user]);
 
 
   // Functions
@@ -93,13 +85,12 @@ const page = () => {
       // Step 4: Sign Up Flow
     } else {
       createUserWithEmailAndPassword(auth, form.email, form.password)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
           const user = userCredential.user;
 
-          return updateProfile(user, { displayName: form.name }).then(() => {
-            const { uid, email, displayName } = auth.currentUser;
-            dispatch(addUser({ uid, email, displayName }));
-          });
+          await updateProfile(user, { displayName: form.name })
+          const { uid, email, displayName } = auth.currentUser
+          dispatch(addUser({ uid, email, displayName }))
         })
         .catch((error) => {
           console.error("Sign Up Error:", error.code, error.message);
@@ -257,7 +248,7 @@ const page = () => {
           <button
             disabled={isSubmitting ? true : false}
             onClick={handleLoginWithFacebook}
-            className={`flex w-full items-center justify-center bg-black border ${isSubmitting ? 'cursor-progress' : "cursor-pointer"} border-gray-300 rounded-lg shadow-md px-6 py-2 text-md font-bold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500`}>
+            className={`flex w-full items-center justify-center bg-black border ${isSubmitting ? 'cursor-progress' : "cursor-pointer"} border-gray-300 rounded-lg shadow-md px-6 py-2 text-md font-bold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mt-3`}>
             <svg className="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48" version="1.1">
               <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">

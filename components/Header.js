@@ -1,24 +1,24 @@
+"use client"
 import React, { useEffect } from 'react'
 import Link from 'next/link'
-import { useDispatch, useSelector } from 'react-redux'
-import { usePathname, useRouter } from 'next/navigation'
+import { useSelector } from 'react-redux'
+import { usePathname } from 'next/navigation'
 import { signOut } from 'firebase/auth'
 import { auth } from '@/utils/firebase'
-import { removeUser } from '@/utils/userSlice'
 
 export default function Header() {
-    const router = useRouter()
     const user = useSelector((state) => state.user)
-    const dispatch = useDispatch()
     const path = usePathname();
 
 
     // Functions
     const handleSignOut = () => {
         signOut(auth)
-        .then(() => {
-                dispatch(removeUser())
-                router.push('/login')
+            .then(() => {
+                console.log('sign out successfully');
+            })
+            .catch((err) => {
+                console.error(err)
             })
     }
 
@@ -39,52 +39,54 @@ export default function Header() {
                 </g>
             </svg>
 
-            <div className={` ${path == '/login' ? 'hidden' : 'flex'} items-center justify-center space-x-3`}>
-                <div className="border border-gray-400 text-white px-3 py-2 rounded-lg flex items-center gap-2 bg-gray-800">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        role="img"
-                        viewBox="0 0 16 16"
-                        width="20"
-                        height="20"
-                        data-icon="languagesmall"
-                        aria-hidden="true"
-                        className="text-white"
-                    >
-                        <path
-                            fill="currentColor"
-                            d="M10.7668 5.33333L10.5038 5.99715L9.33974 8.9355L8.76866 10.377L7.33333 14H9.10751L9.83505 12.0326H13.4217L14.162 14H16L12.5665 5.33333H10.8278H10.7668ZM10.6186 9.93479L10.3839 10.5632H11.1036H12.8856L11.6348 7.2136L10.6186 9.93479ZM9.52722 4.84224C9.55393 4.77481 9.58574 4.71045 9.62211 4.64954H6.41909V2H4.926V4.64954H0.540802V5.99715H4.31466C3.35062 7.79015 1.75173 9.51463 0 10.4283C0.329184 10.7138 0.811203 11.2391 1.04633 11.5931C2.55118 10.6795 3.90318 9.22912 4.926 7.57316V12.6667H6.41909V7.51606C6.81951 8.15256 7.26748 8.76169 7.7521 9.32292L8.31996 7.88955C7.80191 7.29052 7.34631 6.64699 6.9834 5.99715H9.06968L9.52722 4.84224Z"
-                            clipRule="evenodd"
-                            fillRule="evenodd"
-                        ></path>
-                    </svg>
+            {path != '/login' && (
+                <div className={"flex items-center justify-center space-x-3"}>
+                    <div className="border border-gray-400 text-white px-3 py-2 rounded-lg flex items-center gap-2 bg-gray-800">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="20"
+                            height="20"
+                            data-icon="languagesmall"
+                            aria-hidden="true"
+                            className="text-white"
+                        >
+                            <path
+                                fill="currentColor"
+                                d="M10.7668 5.33333L10.5038 5.99715L9.33974 8.9355L8.76866 10.377L7.33333 14H9.10751L9.83505 12.0326H13.4217L14.162 14H16L12.5665 5.33333H10.8278H10.7668ZM10.6186 9.93479L10.3839 10.5632H11.1036H12.8856L11.6348 7.2136L10.6186 9.93479ZM9.52722 4.84224C9.55393 4.77481 9.58574 4.71045 9.62211 4.64954H6.41909V2H4.926V4.64954H0.540802V5.99715H4.31466C3.35062 7.79015 1.75173 9.51463 0 10.4283C0.329184 10.7138 0.811203 11.2391 1.04633 11.5931C2.55118 10.6795 3.90318 9.22912 4.926 7.57316V12.6667H6.41909V7.51606C6.81951 8.15256 7.26748 8.76169 7.7521 9.32292L8.31996 7.88955C7.80191 7.29052 7.34631 6.64699 6.9834 5.99715H9.06968L9.52722 4.84224Z"
+                                clipRule="evenodd"
+                                fillRule="evenodd"
+                            ></path>
+                        </svg>
 
-                    <select
-                        name="language"
-                        id="language"
-                        className="bg-gray-800 text-white border-none focus:outline-none"
-                    >
-                        <option value="english">English</option>
-                        <option value="hindi">Hindi</option>
-                    </select>
+                        <select
+                            name="language"
+                            id="language"
+                            className="bg-gray-800 text-white border-none focus:outline-none"
+                        >
+                            <option value="english">English</option>
+                            <option value="hindi">Hindi</option>
+                        </select>
+                    </div>
+
+                    {!user ? (
+                        <Link href="/login" className='bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-sm cursor-pointer'>
+                            Sign in
+                        </Link>
+                    ) : (
+                        <>
+                            <h1 className='text-lg font-bold'>{user.displayName}</h1>
+                            <button
+                                onClick={handleSignOut}
+                                className='bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-sm cursor-pointer'>
+                                Sign out
+                            </button>
+                        </>
+                    )}
                 </div>
-
-                {!user ? (
-                    <Link href="/login" className='bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-sm cursor-pointer'>
-                        Sign in
-                    </Link>
-                ) : (
-                    <>
-                        <h1 className='text-lg font-bold'>{user.displayName}</h1>
-                        <button
-                            onClick={handleSignOut}
-                            className='bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-sm cursor-pointer'>
-                            Sign out
-                        </button>
-                    </>
-                )}
-            </div>
+            )}
         </div>
     )
 }

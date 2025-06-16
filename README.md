@@ -50,7 +50,8 @@
         ```
     - Create a store with user slice
     - Connect the store with our web site
-
+7. Fix bug: 
+    - Make out browse page protected
 
 
 ## Features
