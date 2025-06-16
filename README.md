@@ -52,7 +52,8 @@
     - Connect the store with our web site
 7. Fix bug: 
     - Make out browse page protected
-
+8. Setup TMDB for fetching movies
+9. Display trailer
 
 ## Features
 

@@ -68,7 +68,6 @@ const page = () => {
 
     // Step 3: Sign In Flow
     if (form.isSignInForm) {
-      console.log("Starting sign in...");
 
       signInWithEmailAndPassword(auth, form.email, form.password)
         .then(() => {
@@ -109,8 +108,6 @@ const page = () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        console.log(user);
 
         // ...
       }).catch((error) => {
@@ -126,11 +123,9 @@ const page = () => {
   }
 
   const handleLoginWithFacebook = () => {
-    console.log("Login start");
     
     signInWithPopup(auth, facebookProvider)
       .then((result) => {
-    console.log("Login have done");
         // The signed-in user info.
         const user = result.user;
 
@@ -142,7 +137,6 @@ const page = () => {
         // ...
       })
       .catch((error) => {
-    console.log("Login has an error");
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
