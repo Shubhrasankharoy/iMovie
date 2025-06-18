@@ -54,6 +54,7 @@
     - Make out browse page protected
 8. Setup TMDB for fetching movies
 9. Display trailer
+10. Display all types of movies
 
 ## Features
 

@@ -6,7 +6,7 @@ const useFetchVideo = (movie_id) => {
     useEffect(() => {
         getTrailerVideoId(); 
     },[movie_id])
-    
+
     const getTrailerVideoId = async() => {
         if(!movie_id) return;
 

@@ -6,7 +6,7 @@
   --muted: #f1fbfe;
   --border: #d0dce1;
   --primary: #00bbe1;
-  --secondary: #00a3c4;
+  --secondary: #155dfc;
   --text-secondary: #5a5a5a;
 }
 
@@ -32,3 +32,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }

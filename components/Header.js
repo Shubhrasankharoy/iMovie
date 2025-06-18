@@ -24,7 +24,7 @@ export default function Header() {
     return (
         <div className='container mx-auto flex justify-between w-full h-23 py-3 relative z-10'>
             <div className='flex items-center '>
-                <h1 className='text-primary font-extrabold text-3xl'>iMOVIE-GPT</h1>
+                <h1 className='text-secondary font-extrabold text-3xl'>iMOVIE-GPT</h1>
             </div>
 
             {path != '/login' && (
