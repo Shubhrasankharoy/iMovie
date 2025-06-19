@@ -3,7 +3,7 @@ import React from 'react'
 export default function VideoTitle({ movieDetails }) {
 
   if (!movieDetails) return null;
-  console.log(movieDetails);
+  
 
   const { title, overview, release_date } = movieDetails
 

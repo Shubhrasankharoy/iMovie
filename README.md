@@ -55,6 +55,7 @@
 8. Setup TMDB for fetching movies
 9. Display trailer
 10. Display all types of movies
+11. Create a container for GPT search
 
 ## Features
 

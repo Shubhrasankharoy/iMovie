@@ -6,11 +6,13 @@ import VideoBackground from './VideoBackground'
 import VideoTitle from './VideoTitle'
 import useFetchVideo from '@/hooks/useFetchVideo'
 import Category from './Category'
+import GptSearch from './GptSearch'
 
 export default function page() {
   const firstMovieDetails = useSelector((state) => state.categories[0]?.movies[0]);
   const videoKey = useFetchVideo(firstMovieDetails?.id);
-  const categories = useSelector((state) => state.categories)
+  const categories = useSelector((state) => state.categories);
+  const showGPTSearch = useSelector((state) => state.variables.showGPTSearch);
   useFetchMovies("now_playing");
   useFetchMovies("popular");
   useFetchMovies("top_rated");
@@ -38,6 +40,10 @@ export default function page() {
           })}
         </div>
       </section>
+
+      {showGPTSearch && (
+        <GptSearch />
+      )}
     </>
   )
 }

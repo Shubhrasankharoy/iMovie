@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/utils/constants'
+import { POSTER_URL } from '@/utils/constants';
 import React, { forwardRef} from 'react'
 
 const MovieList = forwardRef(({ movies }, ref) => {
@@ -12,7 +12,7 @@ const MovieList = forwardRef(({ movies }, ref) => {
                     <div key={movie.id} className='w-32 shrink-0'>
                         <img
                             className='w-full object-cover rounded-md'
-                            src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
+                            src={POSTER_URL + poster_path}
                             alt={title} />
                     </div>
                 )
