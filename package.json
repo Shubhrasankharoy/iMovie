@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@azure-rest/ai-inference": "^1.0.0-beta.6",
+    "@azure/core-auth": "^1.9.0",
+    "@azure/core-sse": "^2.2.0",
     "@reduxjs/toolkit": "^2.8.2",
     "firebase": "^11.9.0",
     "next": "15.3.3",

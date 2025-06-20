@@ -35,7 +35,7 @@ export default function page() {
           {categories.length > 0 && categories.map((category, index) => {
             const { typeKey, movies } = category;
             return (
-              <Category key={typeKey} typeKey={typeKey} movies={movies} />
+              <Category key={typeKey + index} typeKey={typeKey} movies={movies} />
             )
           })}
         </div>

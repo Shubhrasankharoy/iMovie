@@ -56,6 +56,9 @@
 9. Display trailer
 10. Display all types of movies
 11. Create a container for GPT search
+12. Set up free GPT api from [GitHub Marketplae](https://github.com/marketplace/models)
+13. Get suggestions from GPT
+14. Fetch the details of the suggested movies from TMDB and store that in redux store
 
 ## Features
 
