@@ -23,15 +23,15 @@ export default function page() {
 
   return (
     <>
-      <section className="relative flex justify-center">
+      <section className="relative flex justify-center aspect-video">
         <VideoBackground videoKey={videoKey} />
         <VideoTitle movieDetails={firstMovieDetails} />
-        <div className="w-screen flex flex-col mx-auto z-10">
+        <div className="w-screen flex flex-col z-10">
           <Header />
         </div>
       </section>
-      <section className='w-screen relative z-10'>
-        <div className='container mx-auto flex flex-col overflow-hidden space-y-5'>
+      <section className='w-screen relative -my-96 z-10 bg-gradient-to-b px-20 from-black/10 shadow-lg via-black/80 to-black/90'>
+        <div className='w-full flex flex-col overflow-hidden space-y-5'>
           {categories.length > 0 && categories.map((category, index) => {
             const { typeKey, movies } = category;
             return (
