@@ -1,10 +1,10 @@
+import { BASE_IMAGE_URL, CATEGORIES } from '@/utils/constants';
 import React from 'react'
 
 export async function generateStaticParams() {
-  const categories = ['now_playing', 'popular', 'top_rated', 'upcoming'];
-
-  return categories.map((category) => ({category}));
+  return CATEGORIES.map((category) => ({category}));
 }
+
 
 export default async function page({params}) {
   const { category } = await params;

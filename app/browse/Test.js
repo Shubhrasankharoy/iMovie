@@ -1,5 +1,5 @@
 import { fetchCardDetails } from '@/utils/cardDetailsSlice';
-import { POSTER_URL } from '@/utils/constants';
+import { BASE_IMAGE_URL } from '@/utils/constants';
 import React, { forwardRef, useState} from 'react'
 import { useDispatch } from 'react-redux';
 
@@ -42,7 +42,7 @@ const MovieList = forwardRef(({ movies }, ref) => {
                         )} */}
                         <img
                             className='w-full object-cover rounded-md'
-                            src={POSTER_URL + poster_path}
+                            src={BASE_IMAGE_URL + poster_path}
                             alt={title} />
                     </div>
                 )

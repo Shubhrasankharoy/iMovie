@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 
-const useFetchMovies = (type) => {
+const useFetchMovies = (types) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -13,9 +13,17 @@ const useFetchMovies = (type) => {
 
     // Functions
     const fetchMovies = async () => {
-        const result = await fetch(BASE_URL + type + "?language=en-US&page=1", OPTIONS);
-        const data = await result.json();
-        dispatch(addCategory({ typeKey: type, movies: data.results }))
+        if (Array.isArray(types)) {
+            const fetchPromises = types.map(type => 
+                fetch(BASE_URL + type + "?language=en-US&page=1", OPTIONS)
+                    .then(response => response.json())
+                    .then(data => ({ type, data }))
+            );
+            const results = await Promise.all(fetchPromises);
+            results.forEach(({ type, data }) => {
+                dispatch(addCategory({ typeKey: type, movies: data.results }));
+            });
+        }
     }
 }
 

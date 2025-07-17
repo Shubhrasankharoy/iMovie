@@ -1,4 +1,4 @@
-import { POSTER_URL } from '@/utils/constants';
+import { BASE_IMAGE_URL } from '@/utils/constants';
 import React, { forwardRef } from 'react'
 
 const MovieList = forwardRef(({ movies }, ref) => {
@@ -18,7 +18,7 @@ const MovieList = forwardRef(({ movies }, ref) => {
                     >
                         <img
                             className='w-full object-cover rounded-md'
-                            src={POSTER_URL + poster_path}
+                            src={BASE_IMAGE_URL + poster_path}
                             alt={title} />
                     </div>
                 )

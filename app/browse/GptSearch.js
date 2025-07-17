@@ -1,4 +1,4 @@
-import { MOVIE_SEARCH_BASE_URL, OPTIONS, POSTER_URL } from '@/utils/constants';
+import { MOVIE_SEARCH_BASE_URL, OPTIONS, BASE_IMAGE_URL } from '@/utils/constants';
 import { openAIRequest } from '@/utils/openAI';
 import { toggleShowGPTSearch, updateSuggestedSearches } from '@/utils/variableSlice';
 import React, { useEffect, useRef, useState } from 'react'
@@ -112,7 +112,7 @@ export default function GptSearch() {
                 <div key={id} className='bg-gray-700 p-4 rounded-lg w-64'>
                   {poster_path ? (
                     <img
-                      src={POSTER_URL + poster_path}
+                      src={BASE_IMAGE_URL + poster_path}
                       alt={title}
                       className='w-full h-40 object-cover rounded-md mb-2'
                     />

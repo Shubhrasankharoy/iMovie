@@ -1,22 +1,29 @@
 "use client"
 import Header from '@/components/Header'
 import useFetchMovies from '@/hooks/useFetchMovies'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import VideoBackground from './VideoBackground'
 import VideoTitle from './VideoTitle'
 import useFetchVideo from '@/hooks/useFetchVideo'
 import Category from './Category'
 import GptSearch from './GptSearch'
+import { setMovieDetails } from '@/utils/trailerMovieDetailsSlice'
+import useFetchMovieGenreList from '@/hooks/useFetchMovieGenreList'
+import { CATEGORIES } from '@/utils/constants'
 
 export default function page() {
+  const dispatch = useDispatch();
+
   const firstMovieDetails = useSelector((state) => state.categories[0]?.movies[0]);
   const videoKey = useFetchVideo(firstMovieDetails?.id);
   const categories = useSelector((state) => state.categories);
   const showGPTSearch = useSelector((state) => state.variables.showGPTSearch);
-  useFetchMovies("now_playing");
-  useFetchMovies("popular");
-  useFetchMovies("top_rated");
-  useFetchMovies("upcoming");
+  useFetchMovies(CATEGORIES);
+  useFetchMovieGenreList();
+
+  if(firstMovieDetails){
+    dispatch(setMovieDetails(firstMovieDetails));
+  }
 
 
   if (!categories) return;
@@ -25,7 +32,7 @@ export default function page() {
     <>
       <section className="relative flex justify-center aspect-video">
         <VideoBackground videoKey={videoKey} />
-        <VideoTitle movieDetails={firstMovieDetails} />
+        <VideoTitle />
         <div className="w-screen flex flex-col z-10">
           <Header />
         </div>
