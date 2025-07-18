@@ -1,29 +1,27 @@
 import { BASE_URL, OPTIONS } from "@/utils/constants"
-import { useEffect, useState } from "react"
+import { setVideoKeys } from "@/utils/trailerMovieDetailsSlice";
+import { useEffect } from "react"
+import { useDispatch } from "react-redux";
 
 const useFetchVideo = (movie_id) => {
-    const [trailerVideoKey, setTrailerVideoKey] = useState(null)
+    const dispatch = useDispatch();
     useEffect(() => {
-        getTrailerVideoId(); 
-    },[movie_id])
+        getTrailerVideoId();
+    }, [movie_id])
 
-    const getTrailerVideoId = async() => {
-        if(!movie_id) return;
+    const getTrailerVideoId = async () => {
+        if (!movie_id) return;
 
-        try{
+        try {
             const result = await fetch(BASE_URL + movie_id + "/videos", OPTIONS)
             const data = await result.json();
-            const trailerVideos = data.results.filter((video) => video.type == "Trailer")
-            
-            const key = trailerVideos.length > 0 ? trailerVideos[1].key : data.results[0].key;
-            
-            setTrailerVideoKey(key);
-        }catch(err){
+
+            dispatch(setVideoKeys(data.results));
+        } catch (err) {
             console.log(err);
         }
     }
     
-    return trailerVideoKey;
 }
 
 export default useFetchVideo;

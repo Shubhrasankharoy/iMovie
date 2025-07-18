@@ -1,4 +1,5 @@
 import { BASE_IMAGE_URL } from '@/utils/constants';
+import Link from 'next/link';
 import React, { forwardRef } from 'react'
 
 const MovieList = forwardRef(({ movies }, ref) => {
@@ -12,15 +13,16 @@ const MovieList = forwardRef(({ movies }, ref) => {
             {movies.length > 0 && movies.map((movie) => {
                 const { id, poster_path, title } = movie;
                 return (
-                    <div
+                    <Link
                         key={id}
                         className='w-32 cursor-pointer shrink-0 relative z-10'
+                        href={`/browse/movie?id=${id}`}
                     >
                         <img
                             className='w-full object-cover rounded-md'
                             src={BASE_IMAGE_URL + poster_path}
                             alt={title} />
-                    </div>
+                    </Link>
                 )
             })}
         </div>

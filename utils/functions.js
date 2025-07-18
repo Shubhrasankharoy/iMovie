@@ -52,3 +52,35 @@ export const flagToLanguage = (language) => {
             return 'Unknown';
     }
 }
+
+export const getCorrectLogo = (logos, language) => {
+    if (!logos || logos.length === 0) return null;
+
+    const exactMatch = logos.find(logo => logo.iso_639_1 === language);
+    if (exactMatch) return exactMatch;
+
+    const fallback = logos.find(logo => logo.iso_639_1 === 'en');
+    return fallback || logos[0];
+}
+
+export const getTrailerVideoKey = (videos) => {
+    if (!videos || videos.length === 0) return null;
+
+    const trailer = videos.find(video => video.type === 'Trailer');
+    return trailer ? trailer.key : videos[0].key;
+}
+
+export const formatCurrency = (amount) => {
+    if (amount === null || amount === undefined) return 'N/A';
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    }).format(amount);
+}
+
+export const timeFormatter = (time) => {
+    if (time === null || time === undefined) return 'N/A';
+    const hours = Math.floor(time / 60);
+    const minutes = time % 60;
+    return `${hours}h ${minutes}m`;
+}
