@@ -10,6 +10,7 @@ const trailerMovieDetailsSlice = createSlice({
         videoKeys: null,
         credits: null,
         recommendations: null,
+        reviews: null,
     },
     reducers: {
         setMovieDetails: (state, action) => {
@@ -27,9 +28,12 @@ const trailerMovieDetailsSlice = createSlice({
         setRecommendations: (state, action) => {
             state.recommendations = action.payload;
         },
+        setReviews: (state, action) => {
+            state.reviews = action.payload;
+        },
     },
 });
 
-export const { setMovieDetails, setImages, setVideoKeys, setCredits, setRecommendations } = trailerMovieDetailsSlice.actions;
+export const { setMovieDetails, setImages, setVideoKeys, setCredits, setRecommendations, setReviews } = trailerMovieDetailsSlice.actions;
 
 export default trailerMovieDetailsSlice.reducer;

@@ -7,6 +7,7 @@ const variableSlice = createSlice({
         showGPTSearch: false,
         suggestedSearches: null,
         movieGenres: null,
+        activeDetailsNavItem: 'Overview',
     },
     reducers: {
         toggleShowGPTSearch: (state) => {
@@ -18,8 +19,11 @@ const variableSlice = createSlice({
         setMovieGenres: (state, action) => {
             state.movieGenres = action.payload;
         },
+        setActiveDetailsNavItem: (state, action) => {
+            state.activeDetailsNavItem = action.payload;
+        },
     }
 })
 
-export const { toggleShowGPTSearch, updateSuggestedSearches, setMovieGenres } = variableSlice.actions;
+export const { toggleShowGPTSearch, updateSuggestedSearches, setMovieGenres, setActiveDetailsNavItem } = variableSlice.actions;
 export default variableSlice.reducer;

@@ -7,6 +7,7 @@ import useUpdateTrailerDetails from '@/hooks/useUpdateTrailerDetails';
 import { useSelector } from 'react-redux';
 import { BASE_IMAGE_URL } from '@/utils/constants';
 import { extractYearFromDate, formatCurrency } from '@/utils/functions';
+import DetailsSection from '../DetailsSection';
 
 export default function page() {
   const searchParams = useSearchParams();
@@ -26,23 +27,23 @@ export default function page() {
     );
   }
 
-  const { original_title, poster_path, spoken_languages, genres, release_date, belongs_to_collection, budget, revenue, vote_average, vote_count } = movieDetails;
+  const { title, poster_path, spoken_languages, genres, release_date, belongs_to_collection, budget, revenue, vote_average, vote_count } = movieDetails;
 
   return (
     <>
       <TrailerSection />
-      <div className="w-screen px-20 relative -my-96 z-10 bg-black">
+      <div className="w-screen px-20 relative -my-80 z-10 bg-black">
         <section className='py-8 w-full flex gap-8'>
 
           <img
-            className='w-60'
+            className='w-60 rounded-lg'
             src={BASE_IMAGE_URL + poster_path}
-            alt={original_title}
+            alt={title}
           />
 
           <div className='h-full grow'>
             <h1 className='text-3xl text-white font-bold'>
-              {original_title}
+              {title}
               <span className='text-gray-400 text-2xl'>{'(' + extractYearFromDate(release_date) + ')'}</span>
             </h1>
 
@@ -76,26 +77,32 @@ export default function page() {
               </p>
             </div>
 
-            <div className='flex gap-2'>
-              <h1 className='w-20 shrink-0 font-bold'>Collection:</h1>
-              <p className='text-gray-400 flex items-center gap-1'>
-                {belongs_to_collection?.name || "N/A"}
-              </p>
-            </div>
+            {belongs_to_collection !== null && (
+              <div className='flex gap-2'>
+                <h1 className='w-20 shrink-0 font-bold'>Collection:</h1>
+                <p className='text-gray-400 flex items-center gap-1'>
+                  {belongs_to_collection?.name || "N/A"}
+                </p>
+              </div>
+            )}
 
-            <div className='flex gap-2'>
-              <h1 className='w-20 shrink-0 font-bold'>Budget:</h1>
-              <p className='text-gray-400 flex items-center gap-1'>
-                {formatCurrency(budget) || "N/A"}
-              </p>
-            </div>
+            {budget !== 0 && (
+              <div className='flex gap-2'>
+                <h1 className='w-20 shrink-0 font-bold'>Budget:</h1>
+                <p className='text-gray-400 flex items-center gap-1'>
+                  {formatCurrency(budget) || "N/A"}
+                </p>
+              </div>
+            )}
 
-            <div className='flex gap-2'>
-              <h1 className='w-20 shrink-0 font-bold'>Revenue:</h1>
-              <p className='text-gray-400 flex items-center gap-1'>
-                {formatCurrency(revenue) || "N/A"}
-              </p>
-            </div>
+            {revenue !== 0 && (
+              <div className='flex gap-2'>
+                <h1 className='w-20 shrink-0 font-bold'>Revenue:</h1>
+                <p className='text-gray-400 flex items-center gap-1'>
+                  {formatCurrency(revenue) || "N/A"}
+                </p>
+              </div>
+            )}
 
             <div className='flex gap-2 items-center'>
               <div className='text-yellow-400 relative w-16 h-16 flex items-center justify-center'>
@@ -110,6 +117,8 @@ export default function page() {
 
           </div>
         </section>
+
+        <DetailsSection />
       </div>
     </>
   )
