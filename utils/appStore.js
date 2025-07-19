@@ -4,6 +4,7 @@ import moviesReducer from './movieSlice'
 import variableReducer from './variableSlice'
 import cardDetailsReducer from './cardDetailsSlice'
 import trailerMovieDetailsReducer from './trailerMovieDetailsSlice'
+import personDetailsReducer from './personDetailsSlice'
 
 const appStore = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const appStore = configureStore({
         categories: moviesReducer,
         trailerMovieDetails: trailerMovieDetailsReducer,
         variables: variableReducer,
-        cardDetails: cardDetailsReducer
+        cardDetails: cardDetailsReducer,
+        personDetails: personDetailsReducer
     }
 })
 

@@ -9,7 +9,7 @@ const useFetchMovieDetails = (movieId) => {
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
-            const response = await fetch(BASE_URL + movieId, OPTIONS);
+            const response = await fetch(BASE_URL + 'movie/' + movieId, OPTIONS);
             const data = await response.json();
             dispatch(setMovieDetails(data));
         };

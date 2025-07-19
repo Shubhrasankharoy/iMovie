@@ -12,7 +12,7 @@ const useFetchRecommendations = (movieId) => {
         if (!movieId) return;
         const fetchRecommendations = async () => {
             try {
-                const response = await fetch(BASE_URL + movieId + '/recommendations', OPTIONS);
+                const response = await fetch(BASE_URL + 'movie/' + movieId + '/recommendations', OPTIONS);
                 if (!response.ok) {
                     throw new Error('Failed to fetch recommendations');
                 }

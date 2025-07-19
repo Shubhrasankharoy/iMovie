@@ -12,7 +12,7 @@ const useFetchImages = (id) => {
     if (!id) return;
     const fetchImages = async () => {
       try {
-        const response = await fetch(`${BASE_URL}${id}/images`, OPTIONS);
+        const response = await fetch(`${BASE_URL}movie/${id}/images`, OPTIONS);
         const data = await response.json();
         console.log("Fetched images:", data);
         dispatch(setImages(data));

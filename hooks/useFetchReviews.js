@@ -11,7 +11,7 @@ const useFetchReviews = (movieId) => {
     if (!movieId) return;
     const fetchReviews = async () => {
           try {
-            const response = await fetch(`${BASE_URL}${movieId}/reviews`, OPTIONS);
+            const response = await fetch(`${BASE_URL}movie/${movieId}/reviews`, OPTIONS);
             const data = await response.json();
             dispatch(setReviews(data));
           } catch (error) {

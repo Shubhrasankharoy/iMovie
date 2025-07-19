@@ -12,7 +12,7 @@ const useFetchCredits = (movieId) => {
         if (!movieId) return;
         const fetchCredits = async () => {
             try {
-                const response = await fetch(BASE_URL + movieId + '/credits', OPTIONS);
+                const response = await fetch(BASE_URL + 'movie/' + movieId + '/credits', OPTIONS);
                 const data = await response.json();
                 dispatch(setCredits(data));
                 return data;

@@ -15,7 +15,7 @@ const useFetchMovies = (types) => {
     const fetchMovies = async () => {
         if (Array.isArray(types)) {
             const fetchPromises = types.map(type => 
-                fetch(BASE_URL + type + "?language=en-US&page=1", OPTIONS)
+                fetch(BASE_URL + 'movie/' + type + "?language=en-US&page=1", OPTIONS)
                     .then(response => response.json())
                     .then(data => ({ type, data }))
             );

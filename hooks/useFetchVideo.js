@@ -13,7 +13,7 @@ const useFetchVideo = (movie_id) => {
         if (!movie_id) return;
 
         try {
-            const result = await fetch(BASE_URL + movie_id + "/videos", OPTIONS)
+            const result = await fetch(BASE_URL + 'movie/' + movie_id + "/videos", OPTIONS)
             const data = await result.json();
 
             dispatch(setVideoKeys(data.results));

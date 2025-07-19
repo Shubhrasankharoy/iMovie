@@ -9,7 +9,7 @@ export default function CrewPart() {
     if (!crewList || crewList.length === 0) return <div className='text-white text-center'>No crew information available.</div>;
 
     return (
-        <div className="flex flex-wrap justify-between mt-8 gap-4">
+        <div className="flex flex-wrap mt-8 gap-4">
             {crewList.map(member => (
                 <div key={member.credit_id} className="bg-white dark:bg-gray-900 shadow rounded-lg p-4 w-56">
                     {member.profile_path ? (

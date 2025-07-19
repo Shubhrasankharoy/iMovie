@@ -8,14 +8,13 @@ import { useSelector } from 'react-redux';
 import { BASE_IMAGE_URL } from '@/utils/constants';
 import { extractYearFromDate, formatCurrency } from '@/utils/functions';
 import DetailsSection from '../DetailsSection';
+import Link from 'next/link';
 
 export default function page() {
   const searchParams = useSearchParams();
   const movieId = searchParams.get('id');
   const movieDetails = useSelector((state) => state.trailerMovieDetails?.movieDetails);
-  const videoKeys = useSelector((state) => state.trailerMovieDetails?.videoKeys);
   const credits = useSelector((state) => state.trailerMovieDetails?.credits);
-  const recommendations = useSelector((state) => state.trailerMovieDetails?.recommendations);
 
   useUpdateTrailerDetails(movieId);
 
@@ -65,8 +64,18 @@ export default function page() {
 
             <div className='flex gap-2'>
               <h1 className='w-20 shrink-0 font-bold'>Cast:</h1>
-              <p className='text-gray-400 flex items-center gap-1'>
-                {credits?.cast.map((cast) => cast.name).join(", ")}
+              <p className='text-gray-400 flex flex-wrap gap-1'>
+                {credits?.cast.map((cast, idx, arr) => (
+                  <React.Fragment key={cast.id}>
+                    <Link
+                      className='hover:text-white cursor-pointer'
+                      href={`/browse/people?id=${cast.id}`}
+                    >
+                      {cast.name}
+                    </Link>
+                    {idx < arr.length - 1 && ', '}
+                  </React.Fragment>
+                ))}
               </p>
             </div>
 
