@@ -6,15 +6,19 @@ const personDetailsSlice = createSlice({
   name: 'personDetails',
   initialState: {
     topLevelDetails: null,
-    credits: null,
+    movieCredits: null,
+    tvCredits: null,
     images: null,
   },
   reducers: {
     setTopLevelDetails: (state, action) => {
       state.topLevelDetails = action.payload;
     },
-    setCredits: (state, action) => {
-      state.credits = action.payload;
+    setMovieCredits: (state, action) => {
+      state.movieCredits = action.payload;
+    },
+    setTvCredits: (state, action) => {
+      state.tvCredits = action.payload;
     },
     setImages: (state, action) => {
       state.images = action.payload;
@@ -24,7 +28,8 @@ const personDetailsSlice = createSlice({
 
 export const {
   setTopLevelDetails,
-  setCredits,
+  setMovieCredits,
+  setTvCredits,
   setImages,
 } = personDetailsSlice.actions;
 

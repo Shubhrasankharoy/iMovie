@@ -10,7 +10,10 @@ export default function RecommendationsPart() {
     <div>
       <div className='mt-8 flex flex-wrap gap-4'>
 
-        {recommendations.length > 0 && recommendations.map((movie) => (<MovieCard key={movie.id} movie={movie} />))}
+        {recommendations.length > 0 && recommendations.map((movie) => (
+          <div key={movie.id} className={`text-white shrink-0 w-40 h-60 animate-fade-up animate-duration-200 rounded-lg overflow-hidden`}>
+            <MovieCard movie={movie} />
+          </div>))}
       </div>
     </div>
   )

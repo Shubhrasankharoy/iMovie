@@ -55,7 +55,6 @@ export default function Category({ typeKey, movies }) {
       </div>
       <div className='flex justify-between items-center'>
         <h1 className='text-2xl font-bold mb-5'> {category} </h1>
-        <Link href={`/browse/${typeKey}`} className='text-sm text-gray-400 hover:underline'>See All</Link>
       </div>
 
       <MovieList

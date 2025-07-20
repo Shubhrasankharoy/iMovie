@@ -17,3 +17,4 @@ export const OPTIONS = {
 
 export const CATEGORIES = ['now_playing', 'popular', 'top_rated', 'upcoming'];
 export const DETAILS_NAV_ITEMS = ['Overview', 'Reviews', 'Cast', 'Crew', 'Recommendations'];
+export const PERSON_DETAILS_NAV_ITEMS = ['Details', 'Movies', 'TV Shows', 'Images'];

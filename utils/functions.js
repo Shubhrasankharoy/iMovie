@@ -84,3 +84,29 @@ export const timeFormatter = (time) => {
     const minutes = time % 60;
     return `${hours}h ${minutes}m`;
 }
+
+export const getGenderInString = (gender) => {
+    switch (gender) {
+        case 1:
+            return 'Female';
+        case 2:
+            return 'Male';
+        case 3:
+            return 'Other';
+        default:
+            return 'Unknown';
+    }
+}
+
+export const formatCustomDate = (dateString) => {
+
+    if (!dateString) return false;
+
+    const date = new Date(dateString);
+
+    const day = date.getDate();
+    const month = date.toLocaleString('en-US', { month: 'long' }); // Full month name
+    const year = date.getFullYear();
+
+    return `${day}${month} ${year}`;
+}

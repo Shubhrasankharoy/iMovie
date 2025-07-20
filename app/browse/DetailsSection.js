@@ -1,5 +1,5 @@
 import { DETAILS_NAV_ITEMS } from '@/utils/constants'
-import { setActiveDetailsNavItem } from '@/utils/variableSlice';
+import { setActiveMovieDetailsNavItem } from '@/utils/variableSlice';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -22,7 +22,7 @@ const componentMap = {
 
 export default function DetailsSection() {
     const dispatch = useDispatch();
-    const activeDetailsNavItem = useSelector((state) => state.variables?.activeDetailsNavItem);
+    const activeDetailsNavItem = useSelector((state) => state.variables?.activeMovieDetailsNavItem);
     const movieDetails = useSelector((state) => state.trailerMovieDetails?.movieDetails);
 
     if (!movieDetails) {
@@ -37,7 +37,7 @@ export default function DetailsSection() {
                     <span
                         key={index}
                         className={`${activeDetailsNavItem === item ? 'font-bold text-secondary' : 'text-white'} text-xl transition-all cursor-pointer`}
-                        onClick={() => dispatch(setActiveDetailsNavItem(item))}
+                        onClick={() => dispatch(setActiveMovieDetailsNavItem(item))}
                     >
                         {item}
                     </span>

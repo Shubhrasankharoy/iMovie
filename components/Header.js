@@ -25,8 +25,8 @@ export default function Header() {
 
     return (
         <div className='container mx-auto flex justify-between w-full h-28 py-3 relative z-10'>
-            <Link href="/browse" className='flex items-center '>
-                <h1 className='text-secondary font-extrabold text-3xl'>iMOVIE-GPT</h1>
+            <Link href="/browse" className='flex items-center'>
+                <h1 className='text-white text-shadow-lg text-shadow-blue-600 font-extrabold text-3xl'>iMOVIE-GPT</h1>
             </Link>
 
             {path != '/login' && (

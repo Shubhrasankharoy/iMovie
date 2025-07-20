@@ -50,7 +50,7 @@ export default function ReviewPart() {
                                         <span>{new Date(created_at).toLocaleDateString()}</span>
                                     </p>
                                 </div>
-                                <p className='text-gray-300 mt-2 '>{content}</p>
+                                <p className='text-gray-300 mt-2 text-justify'>{content}</p>
                             </div>
                         </div>
                     )
