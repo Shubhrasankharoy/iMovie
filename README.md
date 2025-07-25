@@ -1,77 +1,137 @@
-## iMovie GPT
+# 🎬 iMovie-GPT
 
-1. create next.js
-    - Run this command
-        ```bash
-        npx create-next-app@latest
-        ```
-    - install 
-        - DEPENDENCIES :- 
-            - react, react-dom, next
-        - DEV DEPENDENCIES :- 
-            - @tailwindcss/postcss, tailwindcss
-2. Build get start page
-3. Build login page
-4. Setup firebase
-    - create a project
-    - install firebase
+iMovie-GPT is an intelligent movie browsing web application built using **Next.js**, **Firebase**, **TailwindCSS**, and a **free GPT API**. Users can log in, explore trending movies, and receive AI-generated movie recommendations powered by GPT and TMDB (The Movie Database).
+
+---
+
+## 🚀 Features
+
+- 🔐 **Authentication**
+  - User Sign In / Sign Up with Firebase
+  - Protected Browse Page after Login
+
+- 🎞️ **Browse Page**
+  - Dynamic Header
+  - Main Movie with Trailer Background
+  - Title, Description, and Movie Lists
+
+- 🤖 **MovieGPT Integration**
+  - GPT-powered search bar
+  - AI-generated movie suggestions
+  - TMDB fetch for movie metadata
+  - Full movie details and cast/crew info
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js
+- **Styling:** TailwindCSS
+- **State Management:** Redux Toolkit
+- **Authentication & Hosting:** Firebase
+- **Movie Data:** TMDB API
+- **AI Search:** GPT API (GitHub Marketplace)
+
+---
+
+## 🧱 Project Setup
+
+### 1. Create a Next.js App
+
+```bash
+npx create-next-app@latest
+```
+
+- Install dependencies:
+
+```bash
+npm install react react-dom next
+npm install -D tailwindcss @tailwindcss/postcss
+```
+
+### 2. Firebase Setup
+- Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
+
+- Install Firebase:
+
     ```bash
     npm install firebase
-    ``` 
-    - create firebase.js
-    - install firebase tools for hosting
-    ``` bash
-    npm install -g firebase-tools
     ```
-    - Deploy to Firebase Hosting
-        ``` bash
-        firebase login
-        ```
-        ``` bash
-        firebase init
-        ```
-        - Update nextConfig in next.config.mjs
-            ```javascript
-            output: "export"
-            ```
-        ```bash
-        npm run build
-        ```
-        ``` bash
-        firebase deploy
-        ```
-5. Write authentication logic
-    - Impliment sign in and sign up user api
-6. Setup redux store
-    - install redux
-        ```bash
-        npm install @reduxjs/toolkit
-        npm install react-redux
-        ```
-    - Create a store with user slice
-    - Connect the store with our web site
-7. Fix bug: 
-    - Make out browse page protected
-8. Setup TMDB for fetching movies
-9. Display trailer
-10. Display all types of movies
-11. Create a container for GPT search
-12. Set up free GPT api from [GitHub Marketplae](https://github.com/marketplace/models)
-13. Get suggestions from GPT
-14. Fetch the details of the suggested movies from TMDB and store that in redux store
 
-## Features
+- Set up `Firebase Hosting`:
 
-- Log in / Sign up
-    - Sign in / Sign up form
-    - Redirect to Browse Page
-- Browse (after authentication)
-    - Header
-    - Main Moive
-        - Trailer in background
-        - Title and Description
-        - Movie Suggestions
-            - Movie Lists
-- MovieGPT
-    - Search bar
-    - Movie suggestions
+    ```bash
+    npm install -g firebase-tools
+    firebase login
+    firebase init
+    ```
+
+- Add Firebase config in `firebase.js`
+
+- Update `next.config.mjs`:
+
+    ```js
+    output: "export"
+    ```
+
+- Build and Deploy:
+
+    ```bash
+    npm run build
+    firebase deploy
+    ```
+
+## 🔐 Authentication
+
+- Implement ***Sign In / Sign Up*** APIs with Firebase
+
+- Use **Redux** to store user session data
+
+    ```bash
+    npm install @reduxjs/toolkit react-redux
+    ```
+
+- Create **Redux store** and connect with your app
+
+## 🎬 TMDB Integration
+
+- Fetch **trending**, **top-rated**, **upcoming** movies using the TMDB API
+
+- Display **trailers**, **movie thumbnails**, **genres**, and **descriptions**
+
+## 🤖 GPT Movie Search
+
+- Set up **GPT API** from [GitHub Marketplace](https://github.com/marketplace/models)
+
+- Create a GPT container with a search bar
+
+- Pass user queries to **GPT API**
+
+- Fetch recommended movie details using TMDB
+
+- Store and manage results in **Redux**
+
+- Display full movie details upon click
+
+## 🐛 Bug Fixes
+
+- Protected routing for `Browse page` if user is not authenticated
+
+
+## 📦 Deployment
+
+- Hosted on `Firebase Hosting`
+- Run the following to deploy:
+
+    ```bash
+    npm run build
+    firebase deploy
+    ```
+
+## 👨‍💻 Author
+Shubhra Sankha Roy
+[GitHub](https://github.com/Shubhrasankharoy) | [LinkedIn](https://www.linkedin.com/in/shubhra-sankha-roy-23311b320)
+
+## 📄 License
+
+- This project is open-source and available under the [MIT License](LICENSE).
