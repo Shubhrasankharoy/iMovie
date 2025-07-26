@@ -9,6 +9,7 @@ const variableSlice = createSlice({
         movieGenres: null,
         activeMovieDetailsNavItem: 'Overview',
         activePersonDetailsNavItem: 'Details',
+        language: 'en'
     },
     reducers: {
         toggleShowGPTSearch: (state) => {
@@ -26,8 +27,11 @@ const variableSlice = createSlice({
         setActivePersonDetailsNavItem: (state, action) => {
             state.activePersonDetailsNavItem = action.payload;
         },
+        setLanguage:(state,action) => {
+            state.language = action.payload
+        }
     }
 })
 
-export const { toggleShowGPTSearch, updateSuggestedSearches, setMovieGenres, setActiveMovieDetailsNavItem, setActivePersonDetailsNavItem } = variableSlice.actions;
+export const { toggleShowGPTSearch, updateSuggestedSearches, setMovieGenres, setActiveMovieDetailsNavItem, setActivePersonDetailsNavItem, setLanguage } = variableSlice.actions;
 export default variableSlice.reducer;

@@ -21,7 +21,11 @@ const AuthListener = ({ children }) => {
                 route.push(pathname + (window.location.search || ""));
             }
         }else{
-            route.push('/login')
+            if(pathname === '/login' || pathname === '/'){
+                route.push(pathname)
+            }else{
+                route.push('/login')
+            }
         }
     },[user, pathname, route])
 

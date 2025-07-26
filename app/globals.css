@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tailwindcss-animated";
+@import 'tailwind-scrollbar-hide/v4';
 
 :root {
   --background: #ffffff;

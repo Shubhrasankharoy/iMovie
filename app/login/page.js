@@ -2,7 +2,7 @@
 import Header from '@/components/Header'
 import { BG_URL } from '@/utils/constants'
 import validForm from '@/utils/validForm'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { createUserWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth'
 import { auth } from '@/utils/firebase'
 import { useDispatch, useSelector } from 'react-redux'
@@ -152,10 +152,10 @@ const page = () => {
   return (
     <div className="relative min-h-screen flex justify-center">
       <img className="absolute w-full h-full pointer-events-none object-cover" src={BG_URL} alt="background" />
-      <div className="absolute w-full h-full bg-gradient-to-b to-[#00000069] from-[#0000006c]"></div>
+      {/* <div className="absolute w-full h-full bg-gradient-to-b to-[#00000069] from-[#0000006c]"></div> */}
       <div className="container flex flex-col mx-auto z-10">
         <Header />
-        <div className="w-[500] bg-black/70 mx-auto p-10 my-20 rounded-md">
+        <div className="w-[500] bg-black/70 shadow-lg shadow-black/70 mx-auto p-10 my-20 rounded-md">
           <h1 className='text-3xl font-bold mb-7'>{form.isSignInForm ? 'Sign In' : 'Sign up'} </h1>
 
           {!form.isSignInForm && (
@@ -196,11 +196,11 @@ const page = () => {
           </p>
 
           <button
-            className={`bg-red-600 hover:bg-red-700 text-white ${isSubmitting ? 'cursor-progress' : "cursor-pointer"} focus:ring-2 font-bold py-2 px-4 rounded-sm  w-full`}
+            className={`bg-linear-to-r hover:bg-linear-to-br  ${isSubmitting ? 'cursor-not-allowed text-gray-400 from-secondary to-blue-800' : "cursor-pointer text-white from-primary to-blue-600"} focus:ring-2 font-bold py-2 px-4 rounded-sm  w-full`}
             onClick={handleSubmitForm}
-            disabled={isSubmitting ? true : false}
+            disabled={isSubmitting}
           >
-            {form.isSignInForm ? 'Sign In' : 'Sign up'}
+            {isSubmitting ? 'Loading...' : form.isSignInForm ? 'Sign In' : 'Sign up'}
           </button>
 
           <div className="flex gap-3 w-full items-center my-3">
@@ -211,9 +211,9 @@ const page = () => {
 
 
           <button
-            disabled={isSubmitting ? true : false}
+            disabled={isSubmitting}
             onClick={handleLoginWithGoogle}
-            className={`flex w-full items-center justify-center bg-black border ${isSubmitting ? 'cursor-progress' : "cursor-pointer"} border-gray-300 rounded-lg shadow-md px-6 py-2 text-md font-bold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500`}>
+            className={`flex w-full items-center justify-center bg-black border ${isSubmitting ? 'cursor-not-allowed' : "cursor-pointer"} border-gray-300 rounded-lg shadow-md px-6 py-2 text-md font-bold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500`}>
             <svg className="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg"
               viewBox="-0.5 0 48 48" version="1.1">
 
@@ -240,9 +240,9 @@ const page = () => {
           </button>
 
           <button
-            disabled={isSubmitting ? true : false}
+            disabled={isSubmitting}
             onClick={handleLoginWithFacebook}
-            className={`flex w-full items-center justify-center bg-black border ${isSubmitting ? 'cursor-progress' : "cursor-pointer"} border-gray-300 rounded-lg shadow-md px-6 py-2 text-md font-bold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mt-3`}>
+            className={`flex w-full items-center justify-center bg-black border ${isSubmitting ? 'cursor-not-allowed' : "cursor-pointer"} border-gray-300 rounded-lg shadow-md px-6 py-2 text-md font-bold text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mt-3`}>
             <svg className="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48" version="1.1">
               <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
