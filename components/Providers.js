@@ -6,6 +6,13 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/utils/firebase';
 import { addUser, removeUser } from '@/utils/userSlice';
 import { usePathname, useRouter } from 'next/navigation';
+import { clearCategory } from '@/utils/movieSlice';
+import { clearPersonDetails } from '@/utils/personDetailsSlice';
+import { clearTrailerMovieDetails } from '@/utils/trailerMovieDetailsSlice';
+import { clearVariables, setAlert } from '@/utils/variableSlice';
+import DangerToast from '@/components/DangerToast'
+import SuccessToast from '@/components/SuccessToast'
+import WarningToast from '@/components/WarningToast'
 
 const AuthListener = ({ children }) => {
     const dispatch = useDispatch();
@@ -14,20 +21,20 @@ const AuthListener = ({ children }) => {
     const user = useSelector((state) => state.user);
 
     useEffect(() => {
-        if(user){
+        if (user) {
             if (pathname === '/login' || pathname === '/') {
                 route.push('/browse')
             } else {
                 route.push(pathname + (window.location.search || ""));
             }
-        }else{
-            if(pathname === '/login' || pathname === '/'){
+        } else {
+            if (pathname === '/login' || pathname === '/') {
                 route.push(pathname)
-            }else{
+            } else {
                 route.push('/login')
             }
         }
-    },[user, pathname, route])
+    }, [user, pathname, route])
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged((auth), (user) => {
@@ -36,7 +43,11 @@ const AuthListener = ({ children }) => {
                 dispatch(addUser({ uid, email, displayName }));
             } else {
                 // route.push('/login')
-                dispatch(removeUser())
+                dispatch(removeUser());
+                dispatch(clearCategory());
+                dispatch(clearPersonDetails());
+                dispatch(clearTrailerMovieDetails());
+                dispatch(clearVariables());
             }
         })
 
@@ -46,12 +57,26 @@ const AuthListener = ({ children }) => {
     return children;
 }
 
+const AlertProvider = ({ children }) => {
+    return <>
+        {children}
+        <DangerToast />
+        <SuccessToast />
+        <WarningToast />
+    </>
+}
+
 const Providers = ({ children }) => {
+
 
     return (
         <Provider store={appStore}>
             <AuthListener>
-                {children}
+                <AlertProvider>
+
+                    {children}
+                </AlertProvider>
+
             </AuthListener>
         </Provider>
 

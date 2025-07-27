@@ -7,9 +7,12 @@ const movieSlice = createSlice({
     reducers: {
         addCategory: (state, action) => {
             state.push(action.payload)
+        },
+        clearCategory: (state) => {
+            state = []
         }
     }
 })
 
-export const { addCategory } = movieSlice.actions;
+export const { addCategory, clearCategory } = movieSlice.actions;
 export default movieSlice.reducer

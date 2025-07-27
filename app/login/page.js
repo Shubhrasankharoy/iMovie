@@ -2,18 +2,18 @@
 import Header from '@/components/Header'
 import { BG_URL } from '@/utils/constants'
 import validForm from '@/utils/validForm'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createUserWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth'
 import { auth } from '@/utils/firebase'
 import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from '@/utils/userSlice'
+import { setAlert } from '@/utils/variableSlice'
 
 
 
 const page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
   const googleProvider = new GoogleAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
 
@@ -26,6 +26,18 @@ const page = () => {
     email: '',
     password: ''
   })
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+        handleSubmitForm();
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [dispatch, form]);
 
 
   // Functions
@@ -73,9 +85,13 @@ const page = () => {
         .then(() => {
           const { uid, email, displayName } = auth.currentUser;
           dispatch(addUser({ uid, email, displayName }));
+
+          dispatch(setAlert({ type: 'success', msg: `Welcome back, ${displayName}!` }))
         })
         .catch((error) => {
-          console.error("Sign In Error:", error.code, error.message);
+          console.log("Sign In Error:", error.code, error.message);
+
+          dispatch(setAlert({ type: 'warning', msg: error.message }))
         })
         .finally(() => {
           setIsSubmitting(false)
@@ -90,9 +106,13 @@ const page = () => {
           await updateProfile(user, { displayName: form.name })
           const { uid, email, displayName } = auth.currentUser
           dispatch(addUser({ uid, email, displayName }))
+
+          dispatch(setAlert({ type: 'success', msg: `${displayName}, You're now logged in.` }))
         })
         .catch((error) => {
-          console.error("Sign Up Error:", error.code, error.message);
+          console.log("Sign Up Error:", error.code, error.message);
+
+          dispatch(setAlert({ type: 'warning', msg: error.message }))
         })
         .finally(() => {
           setIsSubmitting(false)
@@ -109,11 +129,14 @@ const page = () => {
         // The signed-in user info.
         const user = result.user;
 
+        dispatch(setAlert({ type: 'success', msg: "Signed in successfully." }))
+
         // ...
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
+        dispatch(setAlert({ type: 'warning', msg: errorMessage }))
         // The email of the user's account used.
         const email = error.customData.email;
         // The AuthCredential type that was used.
@@ -123,11 +146,12 @@ const page = () => {
   }
 
   const handleLoginWithFacebook = () => {
-    
+
     signInWithPopup(auth, facebookProvider)
       .then((result) => {
         // The signed-in user info.
         const user = result.user;
+        dispatch(setAlert({ type: 'success', msg: "Signed in successfully." }))
 
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         const credential = FacebookAuthProvider.credentialFromResult(result);
@@ -140,6 +164,7 @@ const page = () => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
+        dispatch(setAlert({ type: 'warning', msg: errorMessage }));
         // The email of the user's account used.
         const email = error.customData.email;
         // The AuthCredential type that was used.
@@ -191,7 +216,7 @@ const page = () => {
           />
           <p className="text-red-600 ms-1">{form.invalid && form.errorInput == "password" && form.errorMessage} </p>
 
-          <p className='py-3'>{form.isSignInForm ? 'New to iMovie?' : 'Already in iMovie?'}
+          <p className='py-3 text-gray-300'>{form.isSignInForm ? 'New to iMovie?' : 'Already in iMovie?'}
             <span className='text-blue-500 hover:text-blue-600 hover:underline cursor-pointer ms-0.5' onClick={toggleform}>{form.isSignInForm ? 'Sign up now' : 'Sign in now'}</span>
           </p>
 
@@ -258,10 +283,10 @@ const page = () => {
 
             <span>Continue with Facebook</span>
           </button>
-
         </div>
       </div>
     </div>
+
   )
 }
 

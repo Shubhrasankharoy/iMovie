@@ -16,13 +16,11 @@ export default function GptSearch() {
       if (event.key === 'Escape') {
         dispatch(toggleShowGPTSearch());
       }
-    }
-
-    const handleEnterKey = (event) => {
       if (event.key === 'Enter' && searchText.trim() !== '') {
         handleSearch();
       }
     }
+
 
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -33,11 +31,9 @@ export default function GptSearch() {
 
     document.addEventListener('mousedown', handleClickOutside);
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keydown', handleEnterKey);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keydown', handleEnterKey);
       document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [dispatch, searchText]);
 

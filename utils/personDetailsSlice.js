@@ -23,6 +23,12 @@ const personDetailsSlice = createSlice({
     setImages: (state, action) => {
       state.images = action.payload;
     },
+    clearPersonDetails: (state) => {
+      state.topLevelDetails = null
+      state.movieCredits = null
+      state.tvCredits = null
+      state.images = null
+    }
   },
 });
 
@@ -31,6 +37,7 @@ export const {
   setMovieCredits,
   setTvCredits,
   setImages,
+  clearPersonDetails
 } = personDetailsSlice.actions;
 
 export default personDetailsSlice.reducer;

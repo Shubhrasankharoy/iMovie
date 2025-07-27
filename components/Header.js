@@ -1,11 +1,11 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'firebase/auth'
 import { auth } from '@/utils/firebase'
-import { setLanguage, toggleShowGPTSearch } from '@/utils/variableSlice'
+import { setAlert, setLanguage, toggleShowGPTSearch } from '@/utils/variableSlice'
 import { AVAILABLE_LANGUAGES } from '@/utils/constants'
 
 export default function Header() {
@@ -16,19 +16,37 @@ export default function Header() {
     const path = usePathname();
 
 
+    const dropDownRef = useRef();
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (dropDownRef.current && !dropDownRef.current.contains(e.target)) {
+                setShowDropdownManu(false);
+            }
+        }
+
+        document.addEventListener('click', handleClickOutside)
+
+        return () => { document.removeEventListener('click', handleClickOutside) }
+
+    }, [])
+
+
     // Functions
     const handleSignOut = () => {
         signOut(auth)
             .then(() => {
+                dispatch(setAlert({ type: 'success', msg: "Goodbye! See you soon." }))
             })
             .catch((err) => {
                 console.error(err)
+                dispatch(setAlert({ type: 'warning', msg: err.message }))
             })
     }
 
     return (
         <div className='container mx-auto flex justify-between w-full h-28 py-3 relative z-10'>
-            <Link href="/browse" className='flex items-center'>
+            <Link href={user ? '/browse' : '/'} className='flex items-center'>
                 <h1 className='text-white text-shadow-lg text-shadow-blue-600 font-extrabold text-3xl'>iMOVIE-GPT</h1>
             </Link>
 
@@ -46,11 +64,11 @@ export default function Header() {
                         </div>
                     )}
 
-                    <div className='relative'>
+                    <div ref={dropDownRef} className='relative'>
 
-                        <div 
-                        className="border border-gray-400 text-white px-3 py-2 rounded-lg flex items-center gap-2 bg-gray-800 cursor-pointer"
-                        onClick={() => setShowDropdownManu(prev => !prev)}
+                        <div
+                            className="border border-gray-400 text-white px-3 py-2 rounded-lg flex items-center gap-2 bg-gray-800 cursor-pointer"
+                            onClick={() => setShowDropdownManu(prev => !prev)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -75,24 +93,24 @@ export default function Header() {
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg>
                         </div>
-                        {showDropdownManu && (   
+                        {showDropdownManu && (
                             <div className="absolute bottom-0 translate-y-[calc(100%+3px)] z-10 w-full bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600">
-                            <ul className="p-3 space-y-1 max-h-40 scrollbar scrollbar-hide overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
-                                {AVAILABLE_LANGUAGES.map(language => (
-                                    <li 
-                                    key={language.code}
-                                    onClick={()=>{
-                                        dispatch(setLanguage(language.code))
-                                        setShowDropdownManu(false)    
-                                    }}
-                                    >
-                                    <div className="flex items-center cursor-pointer p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                            <div className="w-full ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300">{language.label}</div>
-                                    </div>
-                                </li>
-                                ))}
-                            </ul>
-                        </div>
+                                <ul className="p-3 space-y-1 max-h-40 scrollbar scrollbar-hide overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
+                                    {AVAILABLE_LANGUAGES.map(language => (
+                                        <li
+                                            key={language.code}
+                                            onClick={() => {
+                                                dispatch(setLanguage(language.code))
+                                                setShowDropdownManu(false)
+                                            }}
+                                        >
+                                            <div className="flex items-center cursor-pointer p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                                <div className="w-full ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300">{language.label}</div>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         )}
                     </div>
 

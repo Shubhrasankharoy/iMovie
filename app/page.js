@@ -9,6 +9,8 @@ import ShineCard from "@/components/ShineCard";
 
 export default function Home() {
 
+
+
   return (
     <div className="relative min-h-screen flex justify-center">
       <img className="absolute w-full h-full pointer-events-none object-cover" src={BG_URL} alt="background" />
@@ -19,13 +21,13 @@ export default function Home() {
         <div className="w-1/2 mx-auto flex flex-col items-center justify-center my-10 mt-[25vh] space-y-4 grow">
 
           <h1 className="w-full mb-4 text-4xl text-center font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white flex flex-col">
-            <span>Instantly launch your</span>
-             <span className="bg-gradient-to-r from-blue-500 to-fuchsia-500 bg-clip-text text-transparent">movie discovery hub</span>
+            <span className="animate-fade-up animate-duration-300">Instantly launch your movie</span>
+             <span className="animate-fade-up animate-duration-500 bg-gradient-to-r from-blue-500 to-fuchsia-500 bg-clip-text text-transparent">discovery hub</span>
             </h1>
-          <p className="w-full p-0 mb-8 text-lg font-normal text-center lg:text-xl dark:text-gray-400">
+          <p className="animate-fade-up animate-duration-700 w-full p-0 mb-8 text-lg text-center dark:text-gray-400">
             Movie sites today power the future of film exploration, fueling creators and fans with swift, stylish tools that transform how everyone finds, shares, and enjoys cinema online.
             </p>
-          <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
+          <div className="animate-fade-up animate-duration-900 flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
             <Link
               href="/login"
               className="inline-flex font-bold justify-center items-center py-3 px-5 text-base text-center text-white rounded-lg bg-linear-to-r from-primary to-blue-600 hover:bg-linear-to-br focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
@@ -47,7 +49,7 @@ export default function Home() {
         </div>
 
         {/* Features Section */}
-        <section className="max-w-5xl mx-auto px-4 py-10">
+        <section className="animate-fade-up animate-duration-[1100ms] max-w-5xl mx-auto px-4 py-10">
           <h2 className="text-3xl font-bold text-center mb-10">Features</h2>
           <div className="grid md:grid-cols-3 gap-8">
 
@@ -70,7 +72,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold mb-4">Tech Stack</h2>
           <div className="mt-14 my-4 w-full flex gap-5">
             {TECH_STACKS.map((stack, index) => (
-              <Tooltips key={index} className={stack.class} imgURL={stack.imgURL} tooltipContent={stack.tooltipContent} />
+              <Tooltips key={index} className={stack.class + ` animate-fade-left animate-duration-[${1000 + 200 * index}ms]`} imgURL={stack.imgURL} tooltipContent={stack.tooltipContent} />
             ))}
 
           </div>
