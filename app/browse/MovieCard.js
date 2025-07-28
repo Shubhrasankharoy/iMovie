@@ -13,7 +13,8 @@ export default function MovieCard({ movie }) {
             <img
                 className='w-full h-full object-cover hover:scale-110 transition-transform '
                 src={poster_path ? BASE_IMAGE_URL + poster_path : DEFAULT_POSTER_URL}
-                alt={title} />
+                alt={title}
+            />
         </Link>
     )
 }

@@ -14,12 +14,12 @@ export default function OverviewPart() {
     return (
         <>
             <div className='mt-4 w-full'>
-                <p className='text-xl text-gray-400'>{overview}</p>
+                <p className='text-xl text-gray-400 animate-fade-up animate-duration-200'>{overview}</p>
             </div>
             <div className='w-full mt-8 flex flex-wrap gap-4'>
                 {backdrops && backdrops.length > 0 ? (
                     backdrops.map((backdrop, index) => (
-                        <div key={index} className='flex w-80 justify-center items-center'>
+                        <div key={index} className={`flex w-80 justify-center items-center animate-fade-up animate-duration-[${400 + 100 * index}ms]`}>
                             <img
                                 src={BASE_IMAGE_URL + backdrop.file_path} alt={`Backdrop ${index}`}
                                 className='w-full object-cover rounded-lg'

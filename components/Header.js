@@ -54,7 +54,7 @@ export default function Header() {
                 <div className={"flex items-center justify-center space-x-3"}>
                     {user && path == '/browse' && (
                         <div
-                            className='flex items-center justify-center space-x-3 border border-gray-400  text-gray-300 px-3 py-2 rounded-lg cursor-text bg-gray-800 hover:bg-gray-700 transition-colors duration-200'
+                            className='flex items-center justify-center space-x-3 border border-gray-400  text-gray-300 px-3 py-2.5 rounded-lg cursor-text bg-gray-800 hover:bg-gray-700 transition-colors duration-200'
                             onClick={() => dispatch(toggleShowGPTSearch())}
                         >
                             <svg className='w-4' fill='currentColor' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

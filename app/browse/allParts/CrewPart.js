@@ -1,4 +1,5 @@
 import { BASE_IMAGE_URL } from '@/utils/constants'
+import Link from 'next/link';
 import React from 'react'
 import { useSelector } from 'react-redux';
 
@@ -10,8 +11,8 @@ export default function CrewPart() {
 
     return (
         <div className="flex flex-wrap mt-8 gap-4">
-            {crewList.map(member => (
-                <div key={member.credit_id} className="bg-white dark:bg-gray-900 shadow rounded-lg p-4 w-56">
+            {crewList.map((member, index) => (
+                <Link href={`/browse/people?id=${member.id}`} key={member.credit_id} className={`bg-white dark:bg-gray-900 shadow rounded-lg p-4 w-56 animate-fade-up animate-duration-[${200 + 100 * index}ms]`}>
                     {member.profile_path ? (
                         <img
                             src={BASE_IMAGE_URL + member.profile_path}
@@ -27,7 +28,7 @@ export default function CrewPart() {
                     <p className="text-sm text-gray-600 dark:text-gray-300">{member.job}</p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">Department: {member.department}</p>
                     <p className="text-xs text-yellow-500">🔥 Popularity: {member.popularity.toFixed(1)}</p>
-                </div>
+                </Link>
             ))}
         </div>
 

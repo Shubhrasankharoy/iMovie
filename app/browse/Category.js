@@ -3,7 +3,7 @@ import MovieList from './MovieList'
 import { toTitleCase, trackScroll } from '@/utils/functions';
 import Link from 'next/link';
 
-export default function Category({ typeKey, movies }) {
+export default function Category({ typeKey, movies, autoSlide }) {
   const [category, setCategory] = useState('');
   const [atLeft, setAtLeft] = useState(true);
   const [atRight, setAtRight] = useState(false);
@@ -15,6 +15,20 @@ export default function Category({ typeKey, movies }) {
     categoryKey = toTitleCase(categoryKey);
     setCategory(categoryKey);
   }, [typeKey]);
+
+  useEffect(() => {
+    let timeOut;
+    if (autoSlide) {
+      timeOut = setInterval(() => {
+        scrollTo('right')
+      }, 3000);
+    }
+
+    return () => {
+      clearInterval(timeOut)
+    }
+  }, [])
+
 
   const scrollTo = (direction) => {
     const container = scrollRef.current;

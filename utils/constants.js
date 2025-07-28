@@ -4,7 +4,7 @@ export const DEFAULT_POSTER_URL = "https://eticketsolutions.com/demo/themes/e-ti
 export const BASE_URL = 'https://api.themoviedb.org/3/';
 export const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500/';
 export const MOVIE_SEARCH_BASE_URL = 'https://api.themoviedb.org/3/search/movie?query=';
-export const MOVIE_GENRE_BASE_URL = 'https://api.themoviedb.org/3/genre/movie/list?language=en-US';
+export const MOVIE_GENRE_BASE_URL = 'https://api.themoviedb.org/3/genre/movie/list';
 
 export const OPTIONS = {
   method: 'GET',

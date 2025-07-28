@@ -45,7 +45,7 @@ export default function WarningToast() {
 
     return (
         <div
-            className={`flex items-center fixed top-5 right-6 ${
+            className={`flex items-center fixed z-50 top-5 right-6 ${
                 visible
                     ? 'translate-x-0 opacity-100'
                     : 'translate-x-[calc(100%+30px)] opacity-0'

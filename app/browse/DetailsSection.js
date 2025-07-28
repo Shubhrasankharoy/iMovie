@@ -11,12 +11,12 @@ import CrewPart from './allParts/CrewPart';
 import DetailsPart from './allParts/DetailsPart';
 
 const componentMap = {
-  Overview: <OverviewPart />,
-  Details: <DetailsPart />,
-  Reviews: <ReviewPart />,
-  Cast: <CastPart />,
-  Crew: <CrewPart />,
-  Recommendations: <RecommendationsPart />,
+    Overview: <OverviewPart />,
+    Details: <DetailsPart />,
+    Reviews: <ReviewPart />,
+    Cast: <CastPart />,
+    Crew: <CrewPart />,
+    Recommendations: <RecommendationsPart />,
 };
 
 
@@ -32,17 +32,25 @@ export default function DetailsSection() {
 
     return (
         <section className='py-8 w-full'>
-            <nav className='flex gap-4 border-b border-gray-600 pb-3.5'>
-                {DETAILS_NAV_ITEMS.map((item, index) => (
-                    <span
-                        key={index}
-                        className={`${activeDetailsNavItem === item ? 'font-bold text-secondary' : 'text-white'} text-xl transition-all cursor-pointer`}
-                        onClick={() => dispatch(setActiveMovieDetailsNavItem(item))}
-                    >
-                        {item}
-                    </span>
-                ))}
-            </nav>
+
+
+            <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                <ul className="flex flex-wrap -mb-px">
+                    {DETAILS_NAV_ITEMS.map((item, index) => (
+
+                        <li
+                            key={index}
+                            className="me-2"
+                            onClick={()=> dispatch(setActiveMovieDetailsNavItem(item))}
+                        >
+
+                            <span className={`inline-block p-4 cursor-pointer font-bolder text-xl border-b-2 border-transparent rounded-t-lg ${activeDetailsNavItem == item ? 'text-blue-600 border-blue-600 dark:text-blue-500 dark:border-blue-500' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'} `}>{item}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+
             {componentMap[activeDetailsNavItem] || (
                 <div className='text-white text-center mt-4'>No Content Available</div>
             )}

@@ -26,9 +26,6 @@ export async function openAIRequest(prompt, options = {}) {
 
     const response = await client.path("/chat/completions").post({ body });
 
-    if (isUnexpected(response)) {
-        console.error("Unexpected response:", response);
-    }
 
     return response.body;
 }

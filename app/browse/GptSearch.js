@@ -1,10 +1,12 @@
 import { MOVIE_SEARCH_BASE_URL, OPTIONS, BASE_IMAGE_URL } from '@/utils/constants';
 import { openAIRequest } from '@/utils/openAI';
-import { toggleShowGPTSearch, updateSuggestedSearches } from '@/utils/variableSlice';
+import { setAlert, toggleShowGPTSearch, updateSuggestedSearches } from '@/utils/variableSlice';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import MovieCard from './MovieCard';
 
 export default function GptSearch() {
+  const [isSearching, setIsSearching] = useState(false)
   const dispatch = useDispatch();
   const searchRef = useRef(null);
   const [searchText, setSearchText] = useState("");
@@ -40,20 +42,26 @@ export default function GptSearch() {
 
   const handleSearch = async (e) => {
     if (e?.preventDefault) e.preventDefault();
-    console.log(`Searching for: ${searchText}`);
 
     try {
+      setIsSearching(true)
       const data = await openAIRequest(`Search for: ${searchText}`, {
         temperature: 0.7,
         max_tokens: 100,
       });
 
-      const content = data.choices?.[0]?.message?.content;
-      if (!content)
-        return console.error('No content received from OpenAI API.');
 
-      if (content.includes('Error: I am not allowed to answer such questions.'))
-        return console.error('Error: I am not allowed to answer such questions. I only help with movie suggestions.');
+      const content = data.choices?.[0]?.message?.content;
+      console.log(data)
+      if (!content) {
+        dispatch(setAlert({ type: 'danger', msg: 'Unexpected error' }))
+        return console.log('No content received from OpenAI API.');
+      }
+
+      if (content.includes('Error')) {
+        dispatch(setAlert({ type: 'danger', msg: content }))
+        return console.log('Error: I am not allowed to answer such questions. I only help with movie suggestions.');
+      }
 
       const promiseArray = content.split(',').map((movie) => searchMovieTMDB(movie));
 
@@ -64,13 +72,16 @@ export default function GptSearch() {
       console.log('Suggested Movies:', movies);
 
     } catch (error) {
-      console.error('Search failed:', error);
+      console.log('Search failed:', error);
+      dispatch(setAlert({ type: 'danger', msg: error.message }))
+    } finally {
+      setIsSearching(false)
     }
   }
 
   const searchMovieTMDB = async (movieName) => {
     try {
-      const response = await fetch(MOVIE_SEARCH_BASE_URL + movieName + "&include_adult=false&page=1", OPTIONS);
+      const response = await fetch(MOVIE_SEARCH_BASE_URL + movieName + "&page=1", OPTIONS);
       const data = await response.json();
       console.log('Movie search results:', data);
 
@@ -97,31 +108,22 @@ export default function GptSearch() {
             placeholder='Search for movies, actors, directors...'
             className='focus:outline-none text-lg grow text-white placeholder:text-gray-500 bg-transparent py-2'
           />
-          <button onClick={handleSearch} className='bg-secondary text-white hover:bg-secondary/80 text-lg cursor-pointer px-6 py-2 rounded-md'>Search</button>
+          <button
+            onClick={handleSearch}
+            disabled={isSearching}
+            className={`${isSearching ? 'bg-secondary/80 cursor-not-allowed text-gray-300' : 'bg-secondary cursor-pointer text-white'} hover:bg-secondary/80 text-lg px-6 py-2 rounded-md`}
+          >
+            {isSearching ? 'Searching...' : 'Search'}            
+          </button>
         </div>
 
         <div className="flex flex-wrap gap-5 justify-between p-4 overflow-y-auto h-auto w-full">
           {suggestedSearches && suggestedSearches.length > 0 ? (
-            suggestedSearches.map((movie) => {
-              const { id, title, overview, poster_path } = movie[0];
-              return (
-                <div key={id} className='bg-gray-700 p-4 rounded-lg w-64'>
-                  {poster_path ? (
-                    <img
-                      src={BASE_IMAGE_URL + poster_path}
-                      alt={title}
-                      className='w-full h-40 object-cover rounded-md mb-2'
-                    />
-                  ) : (
-                    <div className='w-full h-40 bg-gray-600 rounded-md mb-2 flex items-center justify-center'>
-                      <span className='text-gray-400'>No Image Available</span>
-                    </div>
-                  )}
-                  <h3 className='text-white text-lg font-semibold'>{title}</h3>
-                  <p className='text-gray-400 text-sm'>{overview}</p>
-                </div>
-              )
-            })
+            suggestedSearches.flat().sort((a, b) => (b.popularity - a.popularity)).map((movie, index) => (
+              <div key={movie.id} className={`text-white shrink-0 w-40 h-60 animate-fade-up animate-duration-[${200 + 100 * index}ms] rounded-lg overflow-hidden`}>
+                <MovieCard movie={movie} />
+              </div>
+            ))
           ) : (
             <p className='text-gray-400'>No suggestions available. Please search for something.</p>
           )}
