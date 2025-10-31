@@ -10,7 +10,7 @@ import { extractYearFromDate, formatCurrency } from '@/utils/functions';
 import DetailsSection from '../DetailsSection';
 import Link from 'next/link';
 
-export default function page() {
+export default function ClientMoviePage() {
   const searchParams = useSearchParams();
   const movieId = searchParams.get('id');
   const movieDetails = useSelector((state) => state.trailerMovieDetails?.movieDetails);
